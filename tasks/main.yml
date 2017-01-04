@@ -1,0 +1,9 @@
+---
+- name: Install Tuned
+  package: name=tuned state=latest
+
+- name: Enable Tuned
+  service: name=tuned state=started enabled=yes
+
+- name: Set Tuned profile {{ tuned_profile }}
+  command: tuned-adm profile {{ tuned_profile }}
