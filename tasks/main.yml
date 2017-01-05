@@ -13,7 +13,7 @@
     tuned_legacy: "{{ (recommend.stdout == ' *fail') | ternary(true, false) }}"
 
 - set_fact:
-    tuned_recommended_profile: recommend.stdout
+    tuned_recommended_profile: "{{ recommend.stdout }}"
   when: "{{ recommend.stdout != ' *fail' }}"
 
 - name: Set Tuned profile {{ tuned_profile }}
