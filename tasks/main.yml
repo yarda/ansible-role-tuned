@@ -6,11 +6,15 @@
   service: name=tuned state=started enabled=yes
 
 - name: Check Tuned version
-  shell: tuned-adm recommend &> /dev/null || echo -n "*fail"
-  register: result
+  shell: tuned-adm recommend &> /dev/null || echo -n " *fail"
+  register: recommend
 
 - set_fact:
-    tuned_legacy: "{{ (result.stdout == '*fail') | ternary(true, false) }}"
+    tuned_legacy: "{{ (recommend.stdout == ' *fail') | ternary(true, false) }}"
+
+- set_fact:
+    tuned_recommended_profile: recommend.stdout
+  when: "{{ recommend.stdout != ' *fail' }}"
 
 - name: Set Tuned profile {{ tuned_profile }}
   command: tuned-adm profile {{ tuned_profile }}
