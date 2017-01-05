@@ -6,7 +6,7 @@
   service: name=tuned state=started enabled=yes
 
 - name: Check Tuned version
-  shell: tuned-adm recommend &> /dev/null || echo -n " *fail"
+  shell: tuned-adm recommend 2> /dev/null || echo -n " *fail"
   register: recommend
 
 - set_fact:
