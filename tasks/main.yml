@@ -5,5 +5,16 @@
 - name: Enable Tuned
   service: name=tuned state=started enabled=yes
 
+- name: Check Tuned version
+  - command: tuned-adm recommend
+    register: result
+    ignore_errors: true
+  - set_fact:
+      tuned_legacy:true
+    when: result | succeeded
+  - set_fact:
+      tuned_legacy:false
+    when: result | failed
+
 - name: Set Tuned profile {{ tuned_profile }}
   command: tuned-adm profile {{ tuned_profile }}
