@@ -7,8 +7,8 @@
 
 - name: Check Tuned version
   command: tuned-adm recommend
-    register: result
-    ignore_errors: true
+  register: result
+  ignore_errors: true
 
 - set_fact:
     tuned_legacy: {{ (result | succeeded) | ternary(true, false) }}
