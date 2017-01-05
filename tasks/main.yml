@@ -11,7 +11,7 @@
   ignore_errors: true
 
 - set_fact:
-    tuned_legacy: {{ (result | succeeded) | ternary(true, false) }}
+    tuned_legacy: "{{ (result | succeeded) | ternary(true, false) }}"
     when: result | succeeded
 
 - name: Set Tuned profile {{ tuned_profile }}
