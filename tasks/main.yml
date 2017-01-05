@@ -6,7 +6,7 @@
   service: name=tuned state=started enabled=yes
 
 - name: Check Tuned version
-  command: tuned-adm recommend
+  shell: tuned-adm recommend &> /dev/null
   register: result
   ignore_errors: true
 
