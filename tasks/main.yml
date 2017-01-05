@@ -2,15 +2,8 @@
 - name: Install Tuned
   package: name=tuned state=latest
 
-- name: Enable Tuned
+- name: Enable Tuned 
   service: name=tuned state=started enabled=yes
-
-- name: Get list of available Tuned profiles
-  shell: tuned-adm list | tail -n +2 | head -n -1 | cut -d' ' -f2
-  register: profiles
-
-- set_fact:
-    tuned_available_profiles: "{{ profiles.stdout_lines }}"
 
 - name: Check Tuned version / get recommended profile
   shell: tuned-adm recommend 2> /dev/null || echo -n " *fail"
@@ -21,6 +14,29 @@
 
 - set_fact:
     tuned_recommended_profile: "{{ (recommend.stdout == ' *fail') | ternary('',recommend.stdout) }}"
+
+- name: Deploy Tuned profiles / configuration
+  copy:
+    src: "tuned/{{ item }}"
+    dest: /etc/tuned/
+  with_pipe:
+    ls {{ deploy_tuned_profiles_srcpath }}/tuned
+  when: deploy_tuned_profiles and not tuned_legacy
+
+- name: Deploy legacy Tuned profiles / configuration
+  copy:
+    src: "tuned_legacy/{{ item }}"
+    dest: /etc/tune-profiles
+  with_pipe:
+    ls {{ deploy_tuned_profiles_srcpath }}/tuned_legacy
+  when: deploy_tuned_profiles and tuned_legacy
+
+- name: Get list of available Tuned profiles
+  shell: tuned-adm list | tail -n +2 | head -n -1 | cut -d' ' -f2
+  register: profiles
+
+- set_fact:
+    tuned_available_profiles: "{{ profiles.stdout_lines }}"
 
 - name: Set Tuned profile {{ tuned_profile }}
   command: tuned-adm profile {{ tuned_profile }}

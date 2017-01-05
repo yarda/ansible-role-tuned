@@ -1,2 +1,4 @@
 ---
 tuned_profile: throughput-performance
+deploy_tuned_profiles: true
+deploy_tuned_profiles_srcpath: "{{ role_path }}/files"
