@@ -10,11 +10,10 @@
   register: recommend
 
 - set_fact:
-    tuned_legacy: "{{ (recommend.stdout == ' *fail') | ternary(true, false) }}"
+    tuned_legacy: "{{ (recommend.stdout == ' *fail') | ternary(true,false) }}"
 
 - set_fact:
-    tuned_recommended_profile: "{{ recommend.stdout }}"
-  when: "{{ recommend.stdout != ' *fail' }}"
+    tuned_recommended_profile: "{{ (recommend.stdout == ' *fail') | ternary('',recommend.stdout) }}"
 
 - name: Set Tuned profile {{ tuned_profile }}
   command: tuned-adm profile {{ tuned_profile }}
