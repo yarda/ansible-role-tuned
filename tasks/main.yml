@@ -15,20 +15,22 @@
 - set_fact:
     tuned_recommended_profile: "{{ (recommend.stdout == ' *fail') | ternary('',recommend.stdout) }}"
 
-- name: Deploy legacy Tuned profiles / configuration
+- name: Deploy legacy Tuned profiles
   copy:
     src: tuned_legacy/{{ item }}
     dest: /etc/tune-profiles
   with_lines:
     ls {{ deploy_tuned_profiles_srcpath }}/tuned_legacy
+  notify: restart tuned
   when: deploy_tuned_profiles and tuned_legacy
 
-- name: Deploy Tuned profiles / configuration
+- name: Deploy Tuned profiles
   copy:
     src: tuned/{{ item }}
     dest: /etc/tuned/
   with_lines:
     ls {{ deploy_tuned_profiles_srcpath }}/tuned
+  notify: restart tuned
   when: deploy_tuned_profiles and not tuned_legacy
 
 - name: Get list of available Tuned profiles
