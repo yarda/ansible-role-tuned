@@ -56,7 +56,6 @@ template_tuned_main_conf: true
 tuned_main_conf_daemon: "1"
 tuned_main_conf_dynamic_tuning: "0"
 tuned_main_conf_sleep_interval: "1"
-tuned_main_conf_update_interval: "10:
+tuned_main_conf_update_interval: "10
 tuned_main_conf_recommend_command: "1"
 tuned_main_conf_reapply_sysctl: "1"
-
