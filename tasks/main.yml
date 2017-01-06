@@ -10,7 +10,7 @@
   register: recommend
 
 - name: Check for Tuned legacy
-  shell: tuned --version 2> /dev/null || echo -n "legacy"
+  shell: tuned --version &> /dev/null || echo -n "legacy"
   register: tversion
 
 - set_fact:
