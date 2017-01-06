@@ -17,17 +17,17 @@
 
 - name: Deploy Tuned profiles / configuration
   copy:
-    src: "tuned/{{ item }}"
+    src: tuned/{{ item }}
     dest: /etc/tuned/
-  with_pipe:
+  with_lines:
     ls {{ deploy_tuned_profiles_srcpath }}/tuned
   when: deploy_tuned_profiles and not tuned_legacy
 
 - name: Deploy legacy Tuned profiles / configuration
   copy:
-    src: "tuned_legacy/{{ item }}"
+    src: tuned_legacy/{{ item }}
     dest: /etc/tune-profiles
-  with_pipe:
+  with_lines:
     ls {{ deploy_tuned_profiles_srcpath }}/tuned_legacy
   when: deploy_tuned_profiles and tuned_legacy
 
