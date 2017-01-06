@@ -2,7 +2,7 @@
 - name: Install Tuned
   package: name=tuned state=latest
 
-- name: Enable Tuned 
+- name: Enable Tuned
   service: name=tuned state=started enabled=yes
 
 - name: Check for Tuned legacy
