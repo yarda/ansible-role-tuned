@@ -5,16 +5,21 @@
 - name: Enable Tuned 
   service: name=tuned state=started enabled=yes
 
-- name: Get Tuned recommended profile
-  shell: tuned-adm recommend 2> /dev/null || echo -n " *fail"
-  register: recommend
-
 - name: Check for Tuned legacy
   shell: tuned --version &> /dev/null || echo -n "legacy"
   register: tversion
 
 - set_fact:
     tuned_legacy: "{{ (tversion.stdout == 'legacy') | ternary(true,false) }}"
+
+- name: Generate tuned-main.conf file
+  template: src=tuned-main.conf.j2 dest=/etc/tuned
+  notify: restart tuned
+  when: template_tuned_main_conf and not tuned_legacy
+
+- name: Get Tuned recommended profile
+  shell: tuned-adm recommend 2> /dev/null || echo -n " *fail"
+  register: recommend
 
 - set_fact:
     tuned_recommended_profile: "{{ (recommend.stdout == ' *fail') | ternary('',recommend.stdout) }}"

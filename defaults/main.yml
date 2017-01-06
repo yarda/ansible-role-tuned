@@ -3,6 +3,8 @@
 # Tuned legacy (RHEL-6)
 
 
+# Tuned profile configuration
+
 # Whether to auto set the Tuned profile which is recommended for the
 # machine / product. This variable is considered false if the machine has
 # Tuned legacy.
@@ -17,6 +19,8 @@ tuned_set_recommended_profile: true
 tuned_profile: throughput-performance
 
 
+# Tuned legacy profile configuration
+
 # Tuned legacy has different profile names, this variable maps Tuned profile
 # names to the most appropriate / similar Tuned legacy profile names.
 tuned_profiles_legacy_map: {"balanced": "default", "powersave": "server-powersave"}
@@ -26,6 +30,8 @@ tuned_profiles_legacy_map: {"balanced": "default", "powersave": "server-powersav
 # current profile.
 tuned_profile_legacy: "{{ tuned_profiles_legacy_map[tuned_profile] | default(tuned_profile) }}"
 
+
+# Tuned / Tuned legacy custom profiles deployment
 
 # Whether to deploy custom Tuned profiles from the
 # 'deploy_tuned_profiles_srcpath'  directory. Under this directory there are
@@ -37,3 +43,20 @@ deploy_tuned_profiles: false
 # Base directory from which custom Tuned / Tuned legacy profiles can be
 # deployed.
 deploy_tuned_profiles_srcpath: "{{ role_path }}/files"
+
+
+# Tuned main configuration templating
+
+# Whether to template Tuned main configuration (not supported with
+# Tuned legacy)
+template_tuned_main_conf: true
+
+# Template defaults, for description see ../templates/tuned-main.conf.j2
+
+tuned_main_conf_daemon: "1"
+tuned_main_conf_dynamic_tuning: "0"
+tuned_main_conf_sleep_interval: "1"
+tuned_main_conf_update_interval: "10:
+tuned_main_conf_recommend_command: "1"
+tuned_main_conf_reapply_sysctl: "1"
+

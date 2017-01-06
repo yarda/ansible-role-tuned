@@ -1,35 +1,37 @@
 tuned
 =====
 
-This role installs and starts Tuned daemon and sets predefined Tuned profile.
 Currently two non-compatible versions of Tuned exists - Tuned (RHEL-7+) and
-Tuned legacy (RHEL-6). This role can also deploy custom Tuned / Tuned legacy
-profiles. In case of Tuned it can also deploy custom configuration and auto set
-the Tuned profile which is recommended for the machine / product (this is not
-supported on Tuned legacy).
+Tuned legacy (RHEL-6).
+
+This role can install, configure (only non-legacy Tuned), and start Tuned
+daemon. It can also activate arbitrary Tuned profile or activate Tuned profile
+which is recommended for the machine / product (the latter is supported only on
+non-legacy Tuned). It can also deploy custom Tuned / Tuned legacy profiles.
 
 Role Variables
 --------------
 
-For list of supported role variables together with description and preset
+For list of supported role variables together with the description and preset
 default values see:
+
 ./defaults/main.yml
 
 Role Facts
 ----------
 
-The role sets the following facts:
+This role sets the following facts:
 
 ### tuned_legacy
-True if there is Tuned legacy.
+True if there is Tuned legacy, false otherwise.
 
 ### tuned_recommended_profile
-Name of Tuned profile which is recommended as a default for the
+Name of the Tuned profile which is recommended as a default for the
 machine / product. This is not supported on Tuned legacy, it's
-set to empty string there.
+set there to the empty string.
 
 ### tuned_available_profiles
-List of Tuned profile names which are available on the machine.
+List of Tuned profiles which are available on the machine.
 
 License
 -------
