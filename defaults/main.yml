@@ -1,4 +1,39 @@
 ---
+# Two non-compatible versions of Tuned exists - Tuned (RHEL-7+) and
+# Tuned legacy (RHEL-6)
+
+
+# Whether to auto set the Tuned profile which is recommended for the
+# machine / product. This variable is considered false if the machine has
+# Tuned legacy.
+tuned_set_recommended_profile: true
+
+# Tuned profile to set if the 'tuned_set_recommended_profile' is 'false'.
+# This is also by default used as a input of 'tuned_profile_legacy'
+# (the profile name to be set with Tuned legacy) after
+# pre-processing / compatibility mapping (see bellow). If empty string is
+# used, no profile will be set (i.e. it will keep the current profile whatever
+# it is).
 tuned_profile: throughput-performance
-deploy_tuned_profiles: true
+
+
+# Tuned legacy has different profile names, this variable maps Tuned profile
+# names to the most appropriate / similar Tuned legacy profile names.
+tuned_profiles_legacy_map: {"balanced": "default", "powersave": "server-powersave"}
+
+# Profile to set with Tuned legacy. By default it's 'tuned_profile' mapped
+# through the 'tuned_profiles_legacy_map'. Empty string means not to change the
+# current profile.
+tuned_profile_legacy: "{{ tuned_profiles_legacy_map[tuned_profile] | default(tuned_profile) }}"
+
+
+# Whether to deploy custom Tuned profiles from the
+# 'deploy_tuned_profiles_srcpath'  directory. Under this directory there are
+# 'tuned' and 'tuned_legacy' subdirectories which can hold custom Tuned and
+# Tuned legacy profiles. In case of Tuned, there can be also custom Tuned
+# configuration.
+deploy_tuned_profiles: false
+
+# Base directory from which custom Tuned / Tuned legacy profiles can be
+# deployed.
 deploy_tuned_profiles_srcpath: "{{ role_path }}/files"

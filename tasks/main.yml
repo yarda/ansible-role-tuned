@@ -15,14 +15,6 @@
 - set_fact:
     tuned_recommended_profile: "{{ (recommend.stdout == ' *fail') | ternary('',recommend.stdout) }}"
 
-- name: Deploy Tuned profiles / configuration
-  copy:
-    src: tuned/{{ item }}
-    dest: /etc/tuned/
-  with_lines:
-    ls {{ deploy_tuned_profiles_srcpath }}/tuned
-  when: deploy_tuned_profiles and not tuned_legacy
-
 - name: Deploy legacy Tuned profiles / configuration
   copy:
     src: tuned_legacy/{{ item }}
@@ -31,6 +23,14 @@
     ls {{ deploy_tuned_profiles_srcpath }}/tuned_legacy
   when: deploy_tuned_profiles and tuned_legacy
 
+- name: Deploy Tuned profiles / configuration
+  copy:
+    src: tuned/{{ item }}
+    dest: /etc/tuned/
+  with_lines:
+    ls {{ deploy_tuned_profiles_srcpath }}/tuned
+  when: deploy_tuned_profiles and not tuned_legacy
+
 - name: Get list of available Tuned profiles
   shell: tuned-adm list | tail -n +2 | head -n -1 | cut -d' ' -f2
   register: profiles
@@ -38,5 +38,14 @@
 - set_fact:
     tuned_available_profiles: "{{ profiles.stdout_lines }}"
 
+- name: Set Tuned legacy profile {{ tuned_profile_legacy }}
+  command: tuned-adm profile {{ tuned_profile_legacy }}
+  when: tuned_legacy and tuned_profile_legacy != ""
+
 - name: Set Tuned profile {{ tuned_profile }}
   command: tuned-adm profile {{ tuned_profile }}
+  when: not tuned_legacy and not tuned_set_recommended_profile and tuned_profile != ""
+
+- name: Set recommended Tuned profile {{ tuned_recommended_profile }}
+  command: tuned-adm profile {{ tuned_recommended_profile }}
+  when: not tuned_legacy and tuned_set_recommended_profile
