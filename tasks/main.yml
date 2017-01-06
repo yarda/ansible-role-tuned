@@ -10,11 +10,11 @@
   register: recommend
 
 - name: Check for Tuned legacy
-  shell: tuned --version 2> /dev/null
+  shell: tuned --version 2> /dev/null || echo -n "legacy"
   register: tversion
 
 - set_fact:
-    tuned_legacy: "{{ (tversion | failed) | ternary(true,false) }}"
+    tuned_legacy: "{{ (tversion.stdout == 'legacy') | ternary(true,false) }}"
 
 - set_fact:
     tuned_recommended_profile: "{{ (recommend.stdout == ' *fail') | ternary('',recommend.stdout) }}"
