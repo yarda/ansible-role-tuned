@@ -98,10 +98,11 @@ named 'myprofile1'. The Tuned profile 'myprofile1' has to be available under
     - ansible-role-tuned
 ```
 
-Install and enable Tuned. Deploy custom Tuned profiles on Tuned and activate profile
-named 'myprofile1'. On Tuned legacy do not deploy custom profiles and do not change
-active profile. The Tuned profile 'myprofile1' has to be available under
-../files/tuned, the directory ../files/tuned_legacy has to be empty:
+Install and enable Tuned. Deploy custom Tuned profiles with Tuned and activate
+profile named 'myprofile1'. With Tuned legacy do not deploy custom profiles
+and do not change active profile. The Tuned profile 'myprofile1' has to be
+available under ../files/tuned, the directory ../files/tuned_legacy has to
+be empty:
 
 ```
 ---
