@@ -49,7 +49,7 @@ deploy_tuned_profiles_srcpath: "{{ role_path }}/files"
 
 # Whether to template Tuned main configuration (not supported with
 # Tuned legacy)
-template_tuned_main_conf: true
+generate_tuned_main_conf: false
 
 # Template defaults, for description see ../templates/tuned-main.conf.j2
 

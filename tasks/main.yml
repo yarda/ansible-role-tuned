@@ -15,7 +15,7 @@
 - name: Generate tuned-main.conf file
   template: src=tuned-main.conf.j2 dest=/etc/tuned/tuned-main.conf
   notify: restart tuned
-  when: template_tuned_main_conf and not tuned_legacy
+  when: generate_tuned_main_conf and not tuned_legacy
 
 - name: Get Tuned recommended profile
   shell: tuned-adm recommend 2> /dev/null || echo -n " *fail"
